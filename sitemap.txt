@@ -1,2 +1,5 @@
-http://example.com/2022/04/25/hello-world/
-http://example.com/
+https://xielingfan.github.io/link/index.html
+https://xielingfan.github.io/categories/index.html
+https://xielingfan.github.io/tags/index.html
+https://xielingfan.github.io/2022/04/25/hello-world/
+https://xielingfan.github.io/

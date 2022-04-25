@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
-  <title>臭宝，爱你！</title>
+  <title>xlfan&#39;s blog</title>
   
   
-  <link href="http://example.com/atom.xml" rel="self"/>
+  <link href="https://xielingfan.github.io/atom.xml" rel="self"/>
   
-  <link href="http://example.com/"/>
+  <link href="https://xielingfan.github.io/"/>
   <updated>2022-04-25T10:30:03.885Z</updated>
-  <id>http://example.com/</id>
+  <id>https://xielingfan.github.io/</id>
   
   <author>
-    <name>John Doe</name>
+    <name>Lingfan Xie</name>
     
   </author>
   
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Hello World</title>
-    <link href="http://example.com/2022/04/25/hello-world/"/>
-    <id>http://example.com/2022/04/25/hello-world/</id>
+    <link href="https://xielingfan.github.io/2022/04/25/hello-world/"/>
+    <id>https://xielingfan.github.io/2022/04/25/hello-world/</id>
     <published>2022-04-25T10:30:03.885Z</published>
     <updated>2022-04-25T10:30:03.885Z</updated>
     
