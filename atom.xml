@@ -6,7 +6,7 @@
   <link href="https://xielingfan.github.io/atom.xml" rel="self"/>
   
   <link href="https://xielingfan.github.io/"/>
-  <updated>2022-04-26T04:34:31.813Z</updated>
+  <updated>2022-04-27T12:31:36.430Z</updated>
   <id>https://xielingfan.github.io/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>字符串匹配——kmp算法</title>
+    <link href="https://xielingfan.github.io/2022/04/26/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D%E2%80%94%E2%80%94kmp%E7%AE%97%E6%B3%95/"/>
+    <id>https://xielingfan.github.io/2022/04/26/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%8C%B9%E9%85%8D%E2%80%94%E2%80%94kmp%E7%AE%97%E6%B3%95/</id>
+    <published>2022-04-26T14:45:33.000Z</published>
+    <updated>2022-04-27T12:31:36.430Z</updated>
+    
+    <content type="html"><![CDATA[<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>s是主串，p是模式串，n是s的长度，m是p的长度, 下标从1开始。 求p是否在s中出现，或者出现多少次。</p><h3 id="暴力做法"><a href="#暴力做法" class="headerlink" title="暴力做法"></a>暴力做法</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">    <span class="type">bool</span> flag = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="type">int</span> j = <span class="number">1</span>; j &lt;= m; j++) &#123;</span><br><span class="line">        <span class="keyword">if</span>(s[i+j<span class="number">-1</span>] != s[j]) &#123;</span><br><span class="line">            flag = <span class="literal">false</span>;</span><br><span class="line">            <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span>(flag) <span class="comment">// 匹配</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>暴力匹配的思路：用模式串匹配主串的每一位，若从主串第i位开始匹配，匹配失败，则从主串第i+1位，模式串第1位重新匹配。</p><p>时间复杂度： 最坏O(n*m)</p><p>暴力做法的缺点：没有利用上次匹配失败时的有用信息，造成无用匹配。</p><h3 id="kmp算法思路"><a href="#kmp算法思路" class="headerlink" title="kmp算法思路"></a>kmp算法思路</h3><p>假设P从S的某处开始匹配， 绿色段为匹配成功的子串， 在红色处（i+1）匹配不成功。 蓝色部分是之后第一个成功的完整匹配</p><p>那么 由p1  &#x3D;  s1、s1 &#x3D;  p2可以推导出p1 &#x3D; p2， 即P[1,j]子串有相同的前后缀p1和p2。</p><p><img src="/../img/kmp4.png" alt="kmp1"></p><p>所以可以得到kmp算法的思路： 在知道p1&#x3D;p2的前提下， 在从绿色段开头k开始的这一轮匹配失败后，i可以不用回退到k+1，保持不变， j回退到p1子串的末尾即可， 因为通过上一轮失败匹配的信息可以得知s1 &#x3D; p2, 而 p1 &#x3D; p2, 所以s1 &#x3D; p1，可以直接从j+1开始继续匹配。 </p><p>为了实现该算法，需要预处理出子串P(1,j)  j &#x3D; 1,2,…,m 的最长相同前后缀长度， 即next数组。求“最长”相同前后缀是因为要防止j回退过多导致错过正确答案。</p><h3 id="模板"><a href="#模板" class="headerlink" title="模板"></a>模板</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 求模式串的Next数组：</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">2</span>, j = <span class="number">0</span>; i &lt;= m; i ++ ) &#123;</span><br><span class="line">    <span class="keyword">while</span> (j &amp;&amp; p[i] != p[j + <span class="number">1</span>]) j = ne[j];</span><br><span class="line">    <span class="keyword">if</span> (p[i] == p[j + <span class="number">1</span>]) j ++ ;</span><br><span class="line">    ne[i] = j;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 匹配</span></span><br><span class="line"><span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>, j = <span class="number">0</span>; i &lt;= n; i ++ ) &#123;</span><br><span class="line">    <span class="keyword">while</span> (j &amp;&amp; s[i] != p[j + <span class="number">1</span>]) j = ne[j];</span><br><span class="line">    <span class="keyword">if</span> (s[i] == p[j + <span class="number">1</span>]) j ++ ;</span><br><span class="line">    <span class="keyword">if</span> (j == m) &#123;</span><br><span class="line">        j = ne[j];</span><br><span class="line">        <span class="comment">// 匹配成功后的逻辑</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;h3 id=&quot;问题&quot;&gt;&lt;a href=&quot;#问题&quot; class=&quot;headerlink&quot; title=&quot;问题&quot;&gt;&lt;/a&gt;问题&lt;/h3&gt;&lt;p&gt;s是主串，p是模式串，n是s的长度，m是p的长度, 下标从1开始。 求p是否在s中出现，或者出现多少次。&lt;/p&gt;
+&lt;h3 id=&quot;暴力做法&quot;</summary>
+      
+    
+    
+    
+    
+    <category term="kmp" scheme="https://xielingfan.github.io/tags/kmp/"/>
+    
+  </entry>
   
   <entry>
     <title>git基本操作</title>
