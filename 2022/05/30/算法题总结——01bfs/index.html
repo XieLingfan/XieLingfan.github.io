@@ -1,0 +1,202 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>算法题总结——01bfs | xlfan's blog</title><meta name="keywords" content="图论,最短路,bfs,双端队列"><meta name="author" content="xlfan"><meta name="copyright" content="xlfan"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="题目特点01bfs用来解决：边权值为0或1(非0即可)，时间复杂度O( v点+e边 )。 主要思想：用双端队列deque，边权值为0，push到队首，反之则到队尾。本质上是简化版的dijkstra算法， 由于边权值只有0和1，可以用双端队列代替堆维护遍历顺序。 例题总结2290. 到达角落需要移除障碍物的最小数目1234567891011121314151617181920212223242526">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法题总结——01bfs">
+<meta property="og:url" content="https://xielingfan.github.io/2022/05/30/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%9401bfs/index.html">
+<meta property="og:site_name" content="xlfan&#39;s blog">
+<meta property="og:description" content="题目特点01bfs用来解决：边权值为0或1(非0即可)，时间复杂度O( v点+e边 )。 主要思想：用双端队列deque，边权值为0，push到队首，反之则到队尾。本质上是简化版的dijkstra算法， 由于边权值只有0和1，可以用双端队列代替堆维护遍历顺序。 例题总结2290. 到达角落需要移除障碍物的最小数目1234567891011121314151617181920212223242526">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://xielingfan.github.io/img/bg8.png">
+<meta property="article:published_time" content="2022-05-30T02:46:20.000Z">
+<meta property="article:modified_time" content="2022-05-30T08:53:08.979Z">
+<meta property="article:author" content="xlfan">
+<meta property="article:tag" content="图论">
+<meta property="article:tag" content="最短路">
+<meta property="article:tag" content="bfs">
+<meta property="article:tag" content="双端队列">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://xielingfan.github.io/img/bg8.png"><link rel="shortcut icon" href="/img/f-solid.svg"><link rel="canonical" href="https://xielingfan.github.io/2022/05/30/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%9401bfs/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery@2/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '算法题总结——01bfs',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-05-30 16:53:08'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><meta name="generator" content="Hexo 6.1.0"><link rel="alternate" href="/atom.xml" title="xlfan's blog" type="application/atom+xml">
+</head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="/img/avatar1.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data is-center"><div class="data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a></div><div class="data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a></div><div class="data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('/img/bg8.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">xlfan's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">算法题总结——01bfs</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-05-30T02:46:20.000Z" title="发表于 2022-05-30 10:46:20">2022-05-30</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-05-30T08:53:08.979Z" title="更新于 2022-05-30 16:53:08">2022-05-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E7%AE%97%E6%B3%95/">算法</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">764</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="算法题总结——01bfs"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="题目特点"><a href="#题目特点" class="headerlink" title="题目特点"></a>题目特点</h1><p>01bfs用来解决：边权值为0或1(非0即可)，时间复杂度O( v点+e边 )。</p>
+<p><strong>主要思想</strong>：用双端队列deque，边权值为0，push到队首，反之则到队尾。本质上是简化版的dijkstra算法， 由于边权值只有0和1，可以用双端队列代替堆维护遍历顺序。</p>
+<h1 id="例题总结"><a href="#例题总结" class="headerlink" title="例题总结"></a>例题总结</h1><h2 id="2290-到达角落需要移除障碍物的最小数目"><a href="#2290-到达角落需要移除障碍物的最小数目" class="headerlink" title="2290. 到达角落需要移除障碍物的最小数目"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-obstacle-removal-to-reach-corner/">2290. 到达角落需要移除障碍物的最小数目</a></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minimumObstacles</span><span class="params">(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; g)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> m = g.<span class="built_in">size</span>(), n = g[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        <span class="type">int</span> dx[<span class="number">4</span>] = &#123;<span class="number">-1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>&#125;, dy[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dist</span>(m, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, INT_MAX));</span><br><span class="line">        dist[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">        deque&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; q;</span><br><span class="line">        q.<span class="built_in">push_back</span>(&#123;<span class="number">0</span>, <span class="number">0</span>&#125;);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(q.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            <span class="keyword">auto</span> t = q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop_front</span>();</span><br><span class="line">            <span class="type">int</span> x = t.first, y = t.second;</span><br><span class="line">            <span class="keyword">if</span>(x == m<span class="number">-1</span> &amp;&amp; y == n<span class="number">-1</span>) <span class="keyword">break</span>;</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">                <span class="type">int</span> a = x + dx[i], b = y + dy[i];</span><br><span class="line">                <span class="keyword">if</span>(a &gt;= <span class="number">0</span> &amp;&amp; a &lt; m &amp;&amp; b &gt;= <span class="number">0</span> &amp;&amp; b &lt; n &amp;&amp; dist[a][b] == INT_MAX) &#123;</span><br><span class="line">                    dist[a][b] = dist[x][y] + g[a][b];</span><br><span class="line">                    <span class="keyword">if</span>(g[a][b]) q.<span class="built_in">push_back</span>(&#123;a, b&#125;);</span><br><span class="line">                    <span class="keyword">else</span> q.<span class="built_in">push_front</span>(&#123;a, b&#125;);</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> dist[m<span class="number">-1</span>][n<span class="number">-1</span>];</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="LCP-56-信物传送"><a href="#LCP-56-信物传送" class="headerlink" title="LCP 56. 信物传送"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/6UEx57/">LCP 56. 信物传送</a></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">conveyorBelt</span><span class="params">(vector&lt;string&gt;&amp; matrix, vector&lt;<span class="type">int</span>&gt;&amp; start, vector&lt;<span class="type">int</span>&gt;&amp; end)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> m = matrix.<span class="built_in">size</span>(), n = matrix[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        deque&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; q;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dist</span>(m, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, INT_MAX));</span><br><span class="line"></span><br><span class="line">        q.<span class="built_in">push_back</span>(&#123;start[<span class="number">0</span>],start[<span class="number">1</span>]&#125;);</span><br><span class="line">        dist[start[<span class="number">0</span>]][start[<span class="number">1</span>]] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> dx[<span class="number">4</span>] = &#123;<span class="number">-1</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">0</span>&#125;, dy[<span class="number">4</span>] = &#123;<span class="number">0</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">1</span>&#125;;</span><br><span class="line">        unordered_map&lt;<span class="type">char</span>, <span class="type">int</span>&gt; mp&#123;</span><br><span class="line">            &#123;<span class="string">&#x27;^&#x27;</span>,<span class="number">0</span>&#125;, &#123;<span class="string">&#x27;&lt;&#x27;</span>,<span class="number">1</span>&#125;, &#123;<span class="string">&#x27;v&#x27;</span>,<span class="number">2</span>&#125;, &#123;<span class="string">&#x27;&gt;&#x27;</span>,<span class="number">3</span>&#125;</span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(q.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            <span class="keyword">auto</span> t = q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop_front</span>();</span><br><span class="line">            <span class="type">int</span> x = t.first, y = t.second;</span><br><span class="line">            <span class="keyword">if</span>(x == end[<span class="number">0</span>] &amp;&amp; y == end[<span class="number">1</span>]) <span class="keyword">return</span> dist[x][y];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">0</span>; i &lt; <span class="number">4</span>; i++) &#123;</span><br><span class="line">                <span class="type">int</span> a = x + dx[i], b = y + dy[i];</span><br><span class="line">                <span class="keyword">if</span>(a &lt; <span class="number">0</span> || a &gt;= m || b &lt; <span class="number">0</span> || b &gt;= n) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">if</span>(i == mp[matrix[x][y]]) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(dist[a][b] &gt; dist[x][y]) &#123;</span><br><span class="line">                        q.<span class="built_in">push_front</span>(&#123;a, b&#125;);</span><br><span class="line">                        dist[a][b] = dist[x][y];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span>(dist[a][b] &gt; dist[x][y] + <span class="number">1</span>) &#123;</span><br><span class="line">                        q.<span class="built_in">push_back</span>(&#123;a, b&#125;);</span><br><span class="line">                        dist[a][b] = dist[x][y] + <span class="number">1</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="1368-使网格图至少有一条有效路径的最小代价"><a href="#1368-使网格图至少有一条有效路径的最小代价" class="headerlink" title="1368. 使网格图至少有一条有效路径的最小代价"></a><a target="_blank" rel="noopener" href="https://leetcode.cn/problems/minimum-cost-to-make-at-least-one-valid-path-in-a-grid/">1368. 使网格图至少有一条有效路径的最小代价</a></h2><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Solution</span> &#123;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">minCost</span><span class="params">(vector&lt;vector&lt;<span class="type">int</span>&gt;&gt;&amp; grid)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> m = grid.<span class="built_in">size</span>(), n = grid[<span class="number">0</span>].<span class="built_in">size</span>();</span><br><span class="line">        deque&lt;pair&lt;<span class="type">int</span>, <span class="type">int</span>&gt;&gt; q;</span><br><span class="line">        vector&lt;vector&lt;<span class="type">int</span>&gt;&gt; <span class="built_in">dist</span>(m, <span class="built_in">vector</span>&lt;<span class="type">int</span>&gt;(n, INT_MAX));</span><br><span class="line"></span><br><span class="line">        q.<span class="built_in">push_back</span>(&#123;<span class="number">0</span>,<span class="number">0</span>&#125;);</span><br><span class="line">        dist[<span class="number">0</span>][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">        <span class="type">int</span> dx[<span class="number">5</span>] = &#123;<span class="number">0</span>, <span class="number">0</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span>&#125;, dy[<span class="number">5</span>] = &#123;<span class="number">0</span>, <span class="number">1</span>, <span class="number">-1</span>, <span class="number">0</span>, <span class="number">0</span>&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(q.<span class="built_in">size</span>()) &#123;</span><br><span class="line">            <span class="keyword">auto</span> t = q.<span class="built_in">front</span>();</span><br><span class="line">            q.<span class="built_in">pop_front</span>();</span><br><span class="line">            <span class="type">int</span> x = t.first, y = t.second;</span><br><span class="line">            <span class="keyword">if</span>(x == m<span class="number">-1</span> &amp;&amp; y == n<span class="number">-1</span>) <span class="keyword">return</span> dist[x][y];</span><br><span class="line"></span><br><span class="line">            <span class="keyword">for</span>(<span class="type">int</span> i = <span class="number">1</span>; i &lt;= <span class="number">4</span>; i++) &#123;</span><br><span class="line">                <span class="type">int</span> a = x + dx[i], b = y + dy[i];</span><br><span class="line">                <span class="keyword">if</span>(a &lt; <span class="number">0</span> || a &gt;= m || b &lt; <span class="number">0</span> || b &gt;= n) <span class="keyword">continue</span>;</span><br><span class="line">                <span class="keyword">if</span>(i == grid[x][y]) &#123;</span><br><span class="line">                    <span class="keyword">if</span>(dist[a][b] &gt; dist[x][y]) &#123;</span><br><span class="line">                        q.<span class="built_in">push_front</span>(&#123;a, b&#125;);</span><br><span class="line">                        dist[a][b] = dist[x][y];</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    <span class="keyword">if</span>(dist[a][b] &gt; dist[x][y] + <span class="number">1</span>) &#123;</span><br><span class="line">                        q.<span class="built_in">push_back</span>(&#123;a, b&#125;);</span><br><span class="line">                        dist[a][b] = dist[x][y] + <span class="number">1</span>;</span><br><span class="line">                    &#125;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">xlfan</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://xielingfan.github.io/2022/05/30/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%9401bfs/">https://xielingfan.github.io/2022/05/30/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%9401bfs/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://xielingfan.github.io" target="_blank">xlfan's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/%E5%9B%BE%E8%AE%BA/">图论</a><a class="post-meta__tags" href="/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/">最短路</a><a class="post-meta__tags" href="/tags/bfs/">bfs</a><a class="post-meta__tags" href="/tags/%E5%8F%8C%E7%AB%AF%E9%98%9F%E5%88%97/">双端队列</a></div><div class="post_share"><div class="social-share" data-image="/img/bg8.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/05/30/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E4%BA%A4%E6%8D%A2%E9%85%8D%E5%AF%B9%E9%97%AE%E9%A2%98/"><img class="prev-cover" src="/img/bg8.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">算法题总结——交换配对问题</div></div></a></div><div class="next-post pull-right"><a href="/2022/05/28/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%8E%AF/"><img class="next-cover" src="/img/bg8.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">算法题总结——约瑟夫环</div></div></a></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="/img/avatar1.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">xlfan</div><div class="author-info__description">Code Tells You How, Comments Tell You Why</div></div><div class="card-info-data is-center"><div class="card-info-data-item"><a href="/archives/"><div class="headline">文章</div><div class="length-num">12</div></a></div><div class="card-info-data-item"><a href="/tags/"><div class="headline">标签</div><div class="length-num">16</div></a></div><div class="card-info-data-item"><a href="/categories/"><div class="headline">分类</div><div class="length-num">2</div></a></div></div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%A2%98%E7%9B%AE%E7%89%B9%E7%82%B9"><span class="toc-number">1.</span> <span class="toc-text">题目特点</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BE%8B%E9%A2%98%E6%80%BB%E7%BB%93"><span class="toc-number">2.</span> <span class="toc-text">例题总结</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#2290-%E5%88%B0%E8%BE%BE%E8%A7%92%E8%90%BD%E9%9C%80%E8%A6%81%E7%A7%BB%E9%99%A4%E9%9A%9C%E7%A2%8D%E7%89%A9%E7%9A%84%E6%9C%80%E5%B0%8F%E6%95%B0%E7%9B%AE"><span class="toc-number">2.1.</span> <span class="toc-text">2290. 到达角落需要移除障碍物的最小数目</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#LCP-56-%E4%BF%A1%E7%89%A9%E4%BC%A0%E9%80%81"><span class="toc-number">2.2.</span> <span class="toc-text">LCP 56. 信物传送</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#1368-%E4%BD%BF%E7%BD%91%E6%A0%BC%E5%9B%BE%E8%87%B3%E5%B0%91%E6%9C%89%E4%B8%80%E6%9D%A1%E6%9C%89%E6%95%88%E8%B7%AF%E5%BE%84%E7%9A%84%E6%9C%80%E5%B0%8F%E4%BB%A3%E4%BB%B7"><span class="toc-number">2.3.</span> <span class="toc-text">1368. 使网格图至少有一条有效路径的最小代价</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/06/20/%E9%98%BF%E6%8B%89%E4%BC%AF%E6%95%B0%E5%AD%97%E4%B8%8E%E4%B8%AD%E6%96%87%E7%9A%84%E8%BD%AC%E6%8D%A2/" title="阿拉伯数字与中文的转换">阿拉伯数字与中文的转换</a><time datetime="2022-06-20T12:12:05.000Z" title="发表于 2022-06-20 20:12:05">2022-06-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/06/13/%E5%89%91%E6%8C%87offer%E9%A2%98%E8%A7%A3/" title="剑指offer题解">剑指offer题解</a><time datetime="2022-06-13T15:59:39.000Z" title="发表于 2022-06-13 23:59:39">2022-06-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/30/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E4%BA%A4%E6%8D%A2%E9%85%8D%E5%AF%B9%E9%97%AE%E9%A2%98/" title="算法题总结——交换配对问题">算法题总结——交换配对问题</a><time datetime="2022-05-30T09:29:19.000Z" title="发表于 2022-05-30 17:29:19">2022-05-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/30/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%9401bfs/" title="算法题总结——01bfs">算法题总结——01bfs</a><time datetime="2022-05-30T02:46:20.000Z" title="发表于 2022-05-30 10:46:20">2022-05-30</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/2022/05/28/%E7%AE%97%E6%B3%95%E9%A2%98%E6%80%BB%E7%BB%93%E2%80%94%E2%80%94%E7%BA%A6%E7%91%9F%E5%A4%AB%E7%8E%AF/" title="算法题总结——约瑟夫环">算法题总结——约瑟夫环</a><time datetime="2022-05-28T00:45:42.000Z" title="发表于 2022-05-28 08:45:42">2022-05-28</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2022 By xlfan</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+  window.MathJax = {
+    tex: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"]],
+      tags: 'ams'
+    },
+    chtml: {
+      scale: 1.2
+    },
+    options: {
+      renderActions: {
+        findScript: [10, doc => {
+          for (const node of document.querySelectorAll('script[type^="math/tex"]')) {
+            const display = !!node.type.match(/; *mode=display/)
+            const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display)
+            const text = document.createTextNode('')
+            node.parentNode.replaceChild(text, node)
+            math.start = {node: text, delim: '', n: 0}
+            math.end = {node: text, delim: '', n: 0}
+            doc.math.push(math)
+          }
+        }, ''],
+        insertScript: [200, () => {
+          document.querySelectorAll('mjx-container:not\([display]\)').forEach(node => {
+            const target = node.parentNode
+            if (target.nodeName.toLowerCase() === 'li') {
+              target.parentNode.classList.add('has-jax')
+            } else {
+              target.classList.add('has-jax')
+            }
+          });
+        }, '', false]
+      }
+    }
+  }
+  
+  const script = document.createElement('script')
+  script.src = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js'
+  script.id = 'MathJax-script'
+  script.async = true
+  document.head.appendChild(script)
+} else {
+  MathJax.startup.document.state(0)
+  MathJax.texReset()
+  MathJax.typeset()
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
